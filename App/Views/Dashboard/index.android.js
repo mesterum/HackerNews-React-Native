@@ -16,7 +16,7 @@ var TabBar = require("../../Components/TabBar");
 var api = require("../../Network/api.js");
 
 var RefreshableListView = require("../../Components/RefreshableListView");
-import eachLimit from 'async/eachLimit';
+import eachLimit from '../../asyncEach.js';
 
 module.exports = React.createClass({
   getInitialState: function(){
@@ -138,26 +138,27 @@ module.exports = React.createClass({
       }
   },
   fetchStoriesUsingTopStoryIDs: function(topStoryIDs, startIndex, amountToAdd, callback){
-    var rowsData = [];
     var endIndex = Math.min(startIndex + amountToAdd, topStoryIDs.length);
     var simpleGen=function* (){for(var i=startIndex;i<endIndex;i++)yield i;}
+	//var rowsData=[...simpleGen()];
     eachLimit(simpleGen(),3,(startIndex,asyncCB)=>{
+		//console.warn('eachLimit '+startIndex)
             fetch(api.HN_ITEM_ENDPOINT+topStoryIDs[startIndex]+".json")
             .then((response) => {
                 if(response.ok){
-                    asyncCB();
-                    return response.json();
+                    response.json().then((topStory) => {
+                        topStory.count = startIndex+1;
+                        asyncCB(null,topStory);
+                    })//.catch(asyncCB);
                 }else {
                     let error = new Error(response.statusText);
                     error.response = response;
+					console.warn(error);
                     throw error;
                 }
-            }).then((topStory) => {
-                topStory.count = startIndex+1;
-                rowsData[startIndex]=topStory;
             }).catch(asyncCB)
             //.done();
-    },(err)=>{if(err);//??
+    },(err,rowsData)=>{if(err)console.error(err);//??
     else
         callback(rowsData);
     })
