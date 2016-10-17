@@ -1,6 +1,7 @@
 'use strict';
 
-var React = require('react-native');
+var React = require('react');
+var RN = require('react-native');
 var {
   StyleSheet,
   Text,
@@ -8,7 +9,7 @@ var {
   TouchableOpacity,
   Animated,
   StatusBar,
-} = React;
+} = RN;
 
 var Icon = require('react-native-vector-icons/FontAwesome');
 

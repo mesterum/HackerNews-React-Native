@@ -22,14 +22,15 @@
  *                         }]}
  *             selectedTab={0}/>
  */
-var React = require('react-native');
+var React = require('react');
+var RN = require('react-native');
 
 var {
 	View,
     TabBarIOS,
     StyleSheet,
     Platform
-} = React;
+} = RN;
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var CustomTabBar = require('./customTabBar.android.js');

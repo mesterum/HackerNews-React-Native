@@ -1,13 +1,13 @@
 'use strict';
 
-var React = require('react-native');
+var React = require('react');
 
 var {
   StyleSheet,
   Text,
   View,
   TouchableHighlight
-} = React;
+} = require('react-native');
 
 var ToolbarAndroid = require('ToolbarAndroid');
 
@@ -27,75 +27,75 @@ module.exports = React.createClass({
   render: function(){
     return(
       <TabBar structure={[{
-                            title: 'Ask HN',
-                            iconName: 'comment',
-                            renderContent: () => {return(
-                                <View style={{flex:1}}>
-                                  <ToolbarAndroid style={styles.toolbar}
-                                                  title={'Ask HN'}
-                                                  titleColor={'#FFFFFF'}/>
-                                  <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'Ask Story')}
-                                                       onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_ASK_STORIES_ENDPOINT)}
-                                                       backgroundColor={'#F6F6EF'}/>
-                                </View>
-                              );}
-                          },
-                          {
-                            title: 'Show HN',
-                            iconName: 'eye',
-                            renderContent: () => {return(
-                                <View style={{flex:1}}>
-                                  <ToolbarAndroid style={styles.toolbar}
-                                                  title={'Show HN'}
-                                                  titleColor={'#FFFFFF'}/>
-                                  <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'Show Story')}
-                                                       onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_SHOW_STORIES_ENDPOINT)}
-                                                       backgroundColor={'#F6F6EF'}/>
-                                </View>
-                              );}
-                          },
-                          {
-                            title: 'Front Page',
-                            iconName: 'star',
-                            renderContent: () => {return(
-                                <View style={{flex:1}}>
-                                  <ToolbarAndroid style={styles.toolbar}
-                                                  title={'Top Stories'}
-                                                  titleColor={'#FFFFFF'}/>
-                                  <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'Top Story')}
-                                                       onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_TOP_STORIES_ENDPOINT)}
-                                                       backgroundColor={'#F6F6EF'}/>
-                                </View>
-                              );}
-                          },
-                          {
-                            title: 'New',
-                            iconName: 'level-up',
-                            renderContent: () => {return(
-                                <View style={{flex:1}}>
-                                  <ToolbarAndroid style={styles.toolbar}
-                                                  title={'New Stories'}
-                                                  titleColor={'#FFFFFF'}/>
-                                  <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'New Story')}
-                                                       onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_NEW_STORIES_ENDPOINT)}
-                                                       backgroundColor={'#F6F6EF'}/>
-                                </View>
-                              );}
-                          },
-                          {
-                            title: 'Jobs',
-                            iconName: 'suitcase',
-                            renderContent: () => {return(
-                                <View style={{flex:1}}>
-                                  <ToolbarAndroid style={styles.toolbar}
-                                                  title={'Jobs'}
-                                                  titleColor={'#FFFFFF'}/>
-                                  <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'Job Post')}
-                                                       onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_JOB_STORIES_ENDPOINT)}
-                                                       backgroundColor={'#F6F6EF'}/>
-                                </View>
-                              );}
-                          },]}
+            title: 'Ask HN',
+            iconName: 'comment',
+            renderContent: () => {return(
+                <View style={{flex:1}}>
+                    <ToolbarAndroid style={styles.toolbar}
+                        title={'Ask HN'}
+                        titleColor={'#FFFFFF'}/>
+                    <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'Ask Story')}
+                        onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_ASK_STORIES_ENDPOINT)}
+                        backgroundColor={'#F6F6EF'}/>
+                </View>
+                );}
+            },
+            {
+            title: 'Show HN',
+            iconName: 'eye',
+            renderContent: () => {return(
+                <View style={{flex:1}}>
+                    <ToolbarAndroid style={styles.toolbar}
+                                    title={'Show HN'}
+                                    titleColor={'#FFFFFF'}/>
+                    <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'Show Story')}
+                                        onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_SHOW_STORIES_ENDPOINT)}
+                                        backgroundColor={'#F6F6EF'}/>
+                </View>
+                );}
+            },
+            {
+            title: 'Front Page',
+            iconName: 'star',
+            renderContent: () => {return(
+                <View style={{flex:1}}>
+                    <ToolbarAndroid style={styles.toolbar}
+                                    title={'Top Stories'}
+                                    titleColor={'#FFFFFF'}/>
+                    <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'Top Story')}
+                                        onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_TOP_STORIES_ENDPOINT)}
+                                        backgroundColor={'#F6F6EF'}/>
+                </View>
+                );}
+            },
+            {
+            title: 'New',
+            iconName: 'level-up',
+            renderContent: () => {return(
+                <View style={{flex:1}}>
+                    <ToolbarAndroid style={styles.toolbar}
+                                    title={'New Stories'}
+                                    titleColor={'#FFFFFF'}/>
+                    <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'New Story')}
+                                        onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_NEW_STORIES_ENDPOINT)}
+                                        backgroundColor={'#F6F6EF'}/>
+                </View>
+                );}
+            },
+            {
+            title: 'Jobs',
+            iconName: 'suitcase',
+            renderContent: () => {return(
+                <View style={{flex:1}}>
+                    <ToolbarAndroid style={styles.toolbar}
+                                    title={'Jobs'}
+                                    titleColor={'#FFFFFF'}/>
+                    <RefreshableListView renderRow={(row)=>this.renderListViewRow(row, 'Job Post')}
+                                        onRefresh={(page, callback)=>this.listViewOnRefresh(page, callback, api.HN_JOB_STORIES_ENDPOINT)}
+                                        backgroundColor={'#F6F6EF'}/>
+                </View>
+                );}
+            },]}
               selectedTab={2}
               activeTintColor={'#ff8533'}
               iconSize={20}/>

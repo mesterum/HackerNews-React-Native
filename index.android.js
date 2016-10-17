@@ -1,6 +1,7 @@
 'use strict';
 
-var React = require('react-native');
+var React = require('react');
+var RN = require('react-native');
 
 var {
   AppRegistry,
@@ -9,11 +10,12 @@ var {
   View,
   WebView,
   BackAndroid
-} = React;
+  ,ToolbarAndroid
+} = RN;
 
 var _navigator;
 
-var ToolbarAndroid = require('ToolbarAndroid');
+//var ToolbarAndroid = require('ToolbarAndroid');
 
 var Dashboard = require('./App/Views/Dashboard/index.android.js');
 var Post = require('./App/Views/Post/index.android.js');
@@ -73,6 +75,6 @@ var styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('HackerNews', () => HackerNews);
+AppRegistry.registerComponent('AwesomeProject', () => HackerNews);
 
 module.exports = HackerNews;

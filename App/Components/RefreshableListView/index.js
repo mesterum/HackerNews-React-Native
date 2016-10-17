@@ -28,7 +28,7 @@
  *                       loadMoreText={'Load More...'}/>
  *  
  */
-var React = require('react-native');
+var React = require('react');
 
 var {
     StyleSheet,
@@ -36,7 +36,7 @@ var {
     View,
     TouchableOpacity,
     Platform
-} = React;
+} = require('react-native');
 
 var GiftedListView = require('react-native-gifted-listview');
 
@@ -61,7 +61,8 @@ module.exports = React.createClass({
                 <View style={styles.navBarSpace} />
                 <GiftedListView rowView={this.renderRow}
                                 onFetch={this.onRefresh}
-                                paginationAllLoadedView={this.renderPaginationAllLoadedView}
+                                enableEmptySections={true}
+								paginationAllLoadedView={this.renderPaginationAllLoadedView}
                                 paginationWaitingView={this.renderPaginationWaitingView}
                                 headerView={this.renderHeaderView}
                                 PullToRefreshViewAndroidProps={{
