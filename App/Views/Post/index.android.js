@@ -15,6 +15,7 @@ var api = require("../../Network/api.js");
 
 var RefreshableListView = require("../../Components/RefreshableListView");
 var Comment = require("./Elements/Comment");
+import eachLimit from 'async/eachLimit';
 
 module.exports = React.createClass({
   render: function(){
@@ -100,27 +101,29 @@ module.exports = React.createClass({
   },
   fetchCommentsUsingKids: function(kids, startIndex, amountToAdd, callback){
     var rowsData = [];
-    var endIndex = (startIndex + amountToAdd) < kids.length ? (startIndex + amountToAdd) : kids.length;
-    function iterateAndFetch(){
-        if (startIndex < endIndex){
+    var endIndex = Math.min(startIndex + amountToAdd, kids.length);
+    var simpleGen=function* (){for(var i=startIndex;i<endIndex;i++)yield i;}
+    eachLimit(simpleGen(),3,(startIndex,asyncCB)=>{
             fetch(api.HN_ITEM_ENDPOINT+kids[startIndex]+".json")
-            .then((response) => response.json())
-            .then((item) => {
-                item.count = startIndex+1;
-                if(!item.deleted){
-                  rowsData.push(item);
+            .then((response) => {
+                if(response.ok){
+                  asyncCB();
+                  return response.json();
+                }else {
+                  let error = new Error(response.statusText);
+                  error.response = response;
+                  throw error;
                 }
-                startIndex++;
-                iterateAndFetch();
-            })
-            .done();
-        }
-        else {
-            callback(rowsData, {allLoaded: endIndex==kids.length});
-            return;
-        }
-    }
-    iterateAndFetch();
+            }).then((item) => {
+                item.count = startIndex+1;
+                if(!item.deleted)
+                  rowsData[startIndex]=item;
+            }).catch(asyncCB)
+            //.done();
+    },(err)=>{if(err);//??
+      else
+        callback(rowsData, {allLoaded: endIndex==kids.length});
+    })
     this.setState({lastIndex: endIndex});
   },
   pushSourceWebpage: function(){

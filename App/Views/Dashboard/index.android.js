@@ -16,6 +16,7 @@ var TabBar = require("../../Components/TabBar");
 var api = require("../../Network/api.js");
 
 var RefreshableListView = require("../../Components/RefreshableListView");
+import eachLimit from 'async/eachLimit';
 
 module.exports = React.createClass({
   getInitialState: function(){
@@ -137,27 +138,30 @@ module.exports = React.createClass({
       }
   },
   fetchStoriesUsingTopStoryIDs: function(topStoryIDs, startIndex, amountToAdd, callback){
-      var rowsData = [];
-      var endIndex = (startIndex + amountToAdd) < topStoryIDs.length ? (startIndex + amountToAdd) : topStoryIDs.length;
-      function iterateAndFetch(){
-          if (startIndex < endIndex){
-              fetch(api.HN_ITEM_ENDPOINT+topStoryIDs[startIndex]+".json")
-              .then((response) => response.json())
-              .then((topStory) => {
-                  topStory.count = startIndex+1;
-                  rowsData.push(topStory);
-                  startIndex++;
-                  iterateAndFetch();
-              })
-              .done();
-          }
-          else {
-              callback(rowsData);
-              return;
-          }
-      }
-      iterateAndFetch();
-      this.setState({lastIndex: endIndex});
+    var rowsData = [];
+    var endIndex = Math.min(startIndex + amountToAdd, topStoryIDs.length);
+    var simpleGen=function* (){for(var i=startIndex;i<endIndex;i++)yield i;}
+    eachLimit(simpleGen(),3,(startIndex,asyncCB)=>{
+            fetch(api.HN_ITEM_ENDPOINT+topStoryIDs[startIndex]+".json")
+            .then((response) => {
+                if(response.ok){
+                    asyncCB();
+                    return response.json();
+                }else {
+                    let error = new Error(response.statusText);
+                    error.response = response;
+                    throw error;
+                }
+            }).then((topStory) => {
+                topStory.count = startIndex+1;
+                rowsData[startIndex]=topStory;
+            }).catch(asyncCB)
+            //.done();
+    },(err)=>{if(err);//??
+    else
+        callback(rowsData);
+    })
+    this.setState({lastIndex: endIndex});
   },
   selectRow: function(row, pushNavBarTitle){
     this.props.navigator.push({
